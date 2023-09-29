@@ -8,7 +8,7 @@ class HangmanGame():
     def initializeWord(self):
         url = "https://random-word-api.herokuapp.com/word?number=1"
         response = requests.get(url)
-        return response.json()[0]
+        return response.json()[0], response.status_code
     
     def updateWordState(self, word_state, letter, word):    
         times = 0
@@ -31,25 +31,25 @@ class HangmanGame():
             ]
         else:
             if errors == 1:
-                manDraw[2] = "  |     |      "
+                manDraw[2] = r"  |     |      "
             if errors == 2:
-                manDraw[3] = "  |     O      "
+                manDraw[3] = r"  |     O      "
             if errors == 3:
-                manDraw[4] = "  |     |      "
+                manDraw[4] = r"  |     |      "
             if errors == 4:
-                manDraw[4] = "  |    /|      "
+                manDraw[4] = r"  |    /|      "
             if errors == 5:
-                manDraw[4] = "  |    /|\     "
+                manDraw[4] = r"  |    /|\     "
             if errors == 6:
-                manDraw[5] = "  |    /       "
+                manDraw[5] = r"  |    /       "
             if errors == 7:
-                manDraw[5] = "  |    / \     "
+                manDraw[5] = r"  |    / \     "
         return manDraw
 
     def showDrawState(self, draw_state):
         for row in draw_state:
             print(row)
-        return 
+        return 1
     
     def showGameState(self, errors, word_state, manDraw):
         draw_state = self.getDraw(errors, manDraw)
@@ -62,12 +62,14 @@ class HangmanGame():
             print("You lose the game !!")
             print(f"The word was '{word}'\n")
             print("Play again")
+            return 1
         else:
             print("Congratulations !!")
             print("You won the game :)")
+            return 0
     
     def initialize_game(self):
-        word = self.initializeWord()                    
+        word, _ = self.initializeWord()                    
         word_state = ["_"] * len(word)
         errors = 0        
         inputs = []
