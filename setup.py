@@ -12,5 +12,5 @@ setup(
     version="2.0",
     description="Hangman's game!",
     options={"build_exe": build_exe_options},
-    executables=[Executable("main.py", base=base)],
+    executables=[Executable("main.py", base=base, icon="C:\Lucas\Python\Hangman\icon.ico")]
 )
