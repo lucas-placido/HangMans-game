@@ -44,10 +44,10 @@ class TestHangmans():
         assert game.endGame(errors=ifCase, word=word) == 1
         assert game.endGame(errors=elseCase, word=word) == 0
 
-    def test_askPlayAgain():
+    def test_askPlayAgain(self):
         pass
 
-    def test_playAgain():
+    def test_playAgain(self):
         pass
 t = TestHangmans()
 
