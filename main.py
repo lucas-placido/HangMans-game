@@ -2,8 +2,9 @@ import time
 import requests
 
 class HangmanGame():
-    def __init__(self, errors=7) -> None:        
+    def __init__(self, errors=7, closingTime = 5) -> None:        
         self.errors = errors
+        self.closingTime = closingTime
     
     def initializeWord(self):
         url = "https://random-word-api.herokuapp.com/word?number=1"
@@ -60,14 +61,34 @@ class HangmanGame():
     def endGame(self, errors, word):
         if errors == self.errors:
             print("You lose the game !!")
-            print(f"The word was '{word}'\n")
-            print("Play again")
+            print(f"The word was '{word}'\n")            
             return 1
         else:
             print("Congratulations !!")
             print("You won the game :)")
             return 0
     
+    def askPlayAgain(self):
+        try:
+            user_input = input("Play again? (Y/N): ").lower()
+        except:
+            print("Enter a valid response (Y/N)")
+            self.askPlayAgain()
+        return user_input
+    
+    def playAgain(self, input):
+        if input == 'y':
+            game.initialize_game()
+        elif input == 'n':    
+            print("Until next time :D")            
+            print(f"Closing in {self.closingTime}")
+            time.sleep(self.closingTime)
+        else:
+            print("Insert a valid character (Y/N)")
+            print("------------------------------\n")
+            response = self.askPlayAgain()
+            self.playAgain(response)
+
     def initialize_game(self):
         word, _ = self.initializeWord()                    
         word_state = ["_"] * len(word)
@@ -129,8 +150,9 @@ class HangmanGame():
 
         
         self.endGame(errors, word)
-        
-        time.sleep(15)
+
+        response = self.askPlayAgain()
+        self.playAgain(response)
 
 game = HangmanGame()
 if __name__ == "__main__":

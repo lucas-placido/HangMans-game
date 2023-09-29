@@ -44,6 +44,11 @@ class TestHangmans():
         assert game.endGame(errors=ifCase, word=word) == 1
         assert game.endGame(errors=elseCase, word=word) == 0
 
+    def test_askPlayAgain():
+        pass
+
+    def test_playAgain():
+        pass
 t = TestHangmans()
 
 t.test_initiazeWord()
@@ -51,3 +56,5 @@ t.test_updateWordState()
 t.test_getDraw()
 t.test_showDrawState()
 t.test_endGame()
+t.test_askPlayAgain()
+t.test_playAgain()
