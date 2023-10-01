@@ -1,34 +1,35 @@
 import time
 import requests
 
-class HangmanGame():
-    def __init__(self, errors=7, closingTime = 5) -> None:        
+
+class HangmanGame:
+    def __init__(self, errors=7, closingTime=5) -> None:
         self.errors = errors
         self.closingTime = closingTime
-    
+
     def initializeWord(self):
         url = "https://random-word-api.herokuapp.com/word?number=1"
         response = requests.get(url)
         return response.json()[0], response.status_code
-    
-    def updateWordState(self, word_state, letter, word):    
+
+    def updateWordState(self, word_state, letter, word):
         times = 0
         for i, x in enumerate(word):
             if x == letter:
                 word_state[i] = letter
                 times += 1
         return word_state, times
-    
-    def getDraw(self, errors, manDraw = None):
+
+    def getDraw(self, errors, manDraw=None):
         if not manDraw:
             manDraw = [
-            "  |            ",
-            "  |------      ",
-            "  |            ",
-            "  |            ",
-            "  |            ",
-            "  |            ",
-            "__|__          ",
+                "  |            ",
+                "  |------      ",
+                "  |            ",
+                "  |            ",
+                "  |            ",
+                "  |            ",
+                "__|__          ",
             ]
         else:
             if errors == 1:
@@ -51,23 +52,23 @@ class HangmanGame():
         for row in draw_state:
             print(row)
         return 1
-    
+
     def showGameState(self, errors, word_state, manDraw):
         draw_state = self.getDraw(errors, manDraw)
         self.showDrawState(draw_state)
-        print("\n", ' '.join(word_state), "\n")
+        print("\n", " ".join(word_state), "\n")
         return draw_state
 
     def endGame(self, errors, word):
         if errors == self.errors:
             print("You lose the game !!")
-            print(f"The word was '{word}'\n")            
+            print(f"The word was '{word}'\n")
             return 1
         else:
             print("Congratulations !!")
             print("You won the game :)")
             return 0
-    
+
     def askPlayAgain(self):
         try:
             user_input = input("Play again? (Y/N): ").lower()
@@ -75,12 +76,12 @@ class HangmanGame():
             print("Enter a valid response (Y/N)")
             self.askPlayAgain()
         return user_input
-    
+
     def playAgain(self, input):
-        if input == 'y':
+        if input == "y":
             game.initialize_game()
-        elif input == 'n':    
-            print("Until next time :D")            
+        elif input == "n":
+            print("Until next time :D")
             print(f"Closing in {self.closingTime}")
             time.sleep(self.closingTime)
         else:
@@ -90,24 +91,26 @@ class HangmanGame():
             self.playAgain(response)
 
     def initialize_game(self):
-        word, _ = self.initializeWord()                    
+        word, _ = self.initializeWord()
         word_state = ["_"] * len(word)
-        errors = 0        
+        errors = 0
         inputs = []
-        
-        print("Welcome to HangMan's game !!\n")        
-        print("""
+
+        print("Welcome to HangMan's game !!\n")
+        print(
+            """
 **How to play**
     1. Enter a letter per time
     2. Write 'try' anytime to try the full word (you will loose if it's not correct)
     3. Have fun :D
-        """)
+        """
+        )
         drawState = self.showGameState(errors, word_state, None)
-                
-        while (errors < self.errors) and ('_' in word_state):            
-            # Test user input            
+
+        while (errors < self.errors) and ("_" in word_state):
+            # Test user input
             userInput = input("Type a letter: ").lower()
-            if userInput == 'try':
+            if userInput == "try":
                 inputWord = input("Type the whole word: ")
                 if inputWord == word:
                     drawState = self.showGameState(errors, word_state, drawState)
@@ -123,7 +126,7 @@ class HangmanGame():
                 print("Insert a valid letter")
                 print("-----------------------------------\n")
                 continue
-            
+
             if letter not in inputs:
                 inputs.append(letter)
             else:
@@ -144,15 +147,15 @@ class HangmanGame():
                 print(f"There is no '{letter}' in the word :(")
                 print(f"You have {triesNumber} tries")
                 print("-----------------------------------\n")
-            
+
             print(f"Used Letters: {' '.join(inputs)}")
             drawState = self.showGameState(errors, word_state, drawState)
 
-        
         self.endGame(errors, word)
 
         response = self.askPlayAgain()
         self.playAgain(response)
+
 
 game = HangmanGame()
 if __name__ == "__main__":

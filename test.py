@@ -3,16 +3,24 @@ import main
 
 
 game = main.HangmanGame()
-class TestHangmans():    
+
+
+class TestHangmans:
     def test_initiazeWord(self):
         assert game.initializeWord()[1] == 200
         assert len(game.initializeWord()[0]) > 0
 
     def test_updateWordState(self):
         word, word_state = "hello", ["_", "_", "_", "_", "_"]
-        letter1, letter2 = 'e', 'l'
-        assert game.updateWordState(word_state, letter1, word) == (["_", "e", "_", "_", "_"], 1)
-        assert game.updateWordState(word_state, letter2, word) == (["_", "e", "l", "l", "_"], 2)
+        letter1, letter2 = "e", "l"
+        assert game.updateWordState(word_state, letter1, word) == (
+            ["_", "e", "_", "_", "_"],
+            1,
+        )
+        assert game.updateWordState(word_state, letter2, word) == (
+            ["_", "e", "l", "l", "_"],
+            2,
+        )
 
     def test_getDraw(self):
         assert game.getDraw(errors=0, manDraw=None) == [
@@ -23,7 +31,7 @@ class TestHangmans():
             "  |            ",
             "  |            ",
             "__|__          ",
-            ]
+        ]
         assert game.getDraw(errors=1, manDraw=game.getDraw(errors=0, manDraw=None)) == [
             "  |            ",
             "  |------      ",
@@ -32,7 +40,7 @@ class TestHangmans():
             "  |            ",
             "  |            ",
             "__|__          ",
-            ]
+        ]
 
     def test_showDrawState(self):
         draw_state = game.getDraw(errors=0, manDraw=None)
@@ -40,7 +48,7 @@ class TestHangmans():
 
     def test_endGame(self):
         ifCase, elseCase = 7, 6
-        word = 'hello'
+        word = "hello"
         assert game.endGame(errors=ifCase, word=word) == 1
         assert game.endGame(errors=elseCase, word=word) == 0
 
@@ -49,6 +57,8 @@ class TestHangmans():
 
     def test_playAgain(self):
         pass
+
+
 t = TestHangmans()
 
 t.test_initiazeWord()

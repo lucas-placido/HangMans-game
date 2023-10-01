@@ -2,9 +2,7 @@ import sys
 from cx_Freeze import setup, Executable
 
 # Dependencies are automatically detected, but it might need fine tuning.
-build_exe_options = {
-    "packages" : ["requests", "time"]        
-}
+build_exe_options = {"packages": ["requests", "time"]}
 
 base = None
 setup(
@@ -12,5 +10,5 @@ setup(
     version="2.0",
     description="Hangman's game!",
     options={"build_exe": build_exe_options},
-    executables=[Executable("main.py", base=base, icon="./icon.ico")]
+    executables=[Executable("main.py", base=base, icon="./icon.ico")],
 )
