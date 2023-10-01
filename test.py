@@ -1,6 +1,5 @@
 import main
 
-
 game = main.HangmanGame()
 
 
