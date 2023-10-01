@@ -7,12 +7,18 @@ class HangmanGame:
         self.errors = errors
         self.closingTime = closingTime
 
-    def initializeWord(self):
+    def initialize_word(self):
+        """Inicialize the word by choosing a random word from the Random Word API
+        Returns:
+            Word (str)
+            status_code (int)
+        """
+
         url = "https://random-word-api.herokuapp.com/word?number=1"
         response = requests.get(url)
         return response.json()[0], response.status_code
 
-    def updateWordState(self, word_state, letter, word):
+    def update_word_state(self, word_state, letter, word):
         times = 0
         for i, x in enumerate(word):
             if x == letter:
@@ -20,7 +26,7 @@ class HangmanGame:
                 times += 1
         return word_state, times
 
-    def getDraw(self, errors, manDraw=None):
+    def get_draw(self, errors, manDraw=None):
         if not manDraw:
             manDraw = [
                 "  |            ",
@@ -48,18 +54,18 @@ class HangmanGame:
                 manDraw[5] = r"  |    / \     "
         return manDraw
 
-    def showDrawState(self, draw_state):
+    def show_draw_state(self, draw_state):
         for row in draw_state:
             print(row)
         return 1
 
-    def showGameState(self, errors, word_state, manDraw):
-        draw_state = self.getDraw(errors, manDraw)
-        self.showDrawState(draw_state)
+    def show_game_state(self, errors, word_state, manDraw):
+        draw_state = self.get_draw(errors, manDraw)
+        self.show_draw_state(draw_state)
         print("\n", " ".join(word_state), "\n")
         return draw_state
 
-    def endGame(self, errors, word):
+    def end_game(self, errors, word):
         if errors == self.errors:
             print("You lose the game !!")
             print(f"The word was '{word}'\n")
@@ -69,15 +75,15 @@ class HangmanGame:
             print("You won the game :)")
             return 0
 
-    def askPlayAgain(self):
+    def ask_play_again(self):
         try:
             user_input = input("Play again? (Y/N): ").lower()
         except:
             print("Enter a valid response (Y/N)")
-            self.askPlayAgain()
+            self.ask_play_again()
         return user_input
 
-    def playAgain(self, input):
+    def play_again(self, input):
         if input == "y":
             game.initialize_game()
         elif input == "n":
@@ -87,11 +93,11 @@ class HangmanGame:
         else:
             print("Insert a valid character (Y/N)")
             print("------------------------------\n")
-            response = self.askPlayAgain()
-            self.playAgain(response)
+            response = self.ask_play_again()
+            self.play_again(response)
 
     def initialize_game(self):
-        word, _ = self.initializeWord()
+        word, _ = self.initialize_word()
         word_state = ["_"] * len(word)
         errors = 0
         inputs = []
@@ -105,7 +111,7 @@ class HangmanGame:
     3. Have fun :D
         """
         )
-        drawState = self.showGameState(errors, word_state, None)
+        drawState = self.show_game_state(errors, word_state, None)
 
         while (errors < self.errors) and ("_" in word_state):
             # Test user input
@@ -113,10 +119,10 @@ class HangmanGame:
             if userInput == "try":
                 inputWord = input("Type the whole word: ")
                 if inputWord == word:
-                    drawState = self.showGameState(errors, word_state, drawState)
+                    drawState = self.show_game_state(errors, word_state, drawState)
                     break
                 else:
-                    drawState = self.showGameState(errors, word_state, drawState)
+                    drawState = self.show_game_state(errors, word_state, drawState)
                     errors = self.errors
                     break
             else:
@@ -136,7 +142,7 @@ class HangmanGame:
 
             # Checks if letter is in the word and update the wordState or the drawState
             if letter in word:
-                word_state, times = self.updateWordState(word_state, letter, word)
+                word_state, times = self.update_word_state(word_state, letter, word)
                 triesNumber = self.errors - errors
                 print(f"There is {times} '{letter}' in the word :)")
                 print(f"You have {triesNumber} tries")
@@ -149,12 +155,12 @@ class HangmanGame:
                 print("-----------------------------------\n")
 
             print(f"Used Letters: {' '.join(inputs)}")
-            drawState = self.showGameState(errors, word_state, drawState)
+            drawState = self.show_game_state(errors, word_state, drawState)
 
-        self.endGame(errors, word)
+        self.end_game(errors, word)
 
-        response = self.askPlayAgain()
-        self.playAgain(response)
+        response = self.ask_play_again()
+        self.play_again(response)
 
 
 game = HangmanGame()
