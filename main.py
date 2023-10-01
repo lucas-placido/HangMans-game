@@ -22,6 +22,17 @@ class HangmanGame:
         return response.json()[0], response.status_code
 
     def update_word_state(self, word_state, letter, word):
+        """
+    Atualiza o estado da palavra com uma letra e conta as ocorrências.
+
+    Args:
+        word_state (list): Estado atual da palavra.
+        letter (str): Letra a ser adicionada.
+        word (str): Palavra alvo.
+
+    Returns:
+        tuple: Estado atualizado da palavra e contagem de ocorrências da letra.
+    """
         times = 0
         for i, x in enumerate(word):
             if x == letter:
